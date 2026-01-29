@@ -1,0 +1,16 @@
+def detect_outliers_iqr(data, column):
+    Q1 = data[column].quantile(0.25)
+    Q3 = data[column].quantile(0.75)
+    IQR = Q3 - Q1
+    lower_bound = Q1 - 1.5 * IQR
+    upper_bound = Q3 + 1.5 * IQR
+    outliers = data[(data[column] < lower_bound) | (data[column] > upper_bound)]
+    return outliers
+
+# Kolom numerik
+numeric_cols = ['Jumlah_Terjual', 'Harga_Satuan', 'Stok_Tersisa', 'Total_Penjualan']
+
+# Tampilkan jumlah outlier tiap kolom
+for col in numeric_cols:
+    outlier_rows = detect_outliers_iqr(df, col)
+    print(f'Outlier di {col}: {len(outlier_rows)} data')
